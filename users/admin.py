@@ -2,5 +2,33 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Account
+from django.contrib.auth.admin import UserAdmin
 
-admin.site.register(Account)
+class MyAdminAccounts(UserAdmin):
+	model= Account
+	list_display= ('email', 'first_name', 'last_name', 'is_employee', 'is_employer')
+	list_filter= ('email', 'first_name', 'last_name', 'is_employee', 'is_employer')
+	search_fields=('email', 'first_name', 'last_name')
+	ordering=('email', 'first_name')
+	readonly_fields=['date_joined']
+	
+#for adding new field
+	add_fieldsets=(
+		(None, {
+			'classes':('wide',),
+			'fields':('email','first_name', 'last_name', 'password1','password2','is_employee', 'is_employer','is_active')
+			}),
+		)
+
+#for updation
+	fieldsets=(
+		(None, {'fields':('email','first_name', 'last_name', 'password')}),
+		('Permissions',{'fields':('is_staff','is_active','is_employee','is_employer')})
+
+
+		)
+
+
+
+
+admin.site.register(Account, MyAdminAccounts)
