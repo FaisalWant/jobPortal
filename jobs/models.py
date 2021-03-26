@@ -16,6 +16,10 @@ class Category(models.Model):
 		super(Category, self).save(*args, **kwargs)
 
 
+	def job_count(self):
+		return self.jobs.all().count()
+
+
 
 
 
