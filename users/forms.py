@@ -7,6 +7,8 @@ class AccountRegisterForm(UserCreationForm):
 
 	CHOICES=[('is_employee', 'Employee'),
 	('is_employer','Employer')]
+
+	
 	user_types= forms.CharField(label="User Type", widget=forms.RadioSelect(choices=CHOICES))
 
 	class Meta:
