@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jobs',
-    'users'
+    'users',
+    'ckeditor'
 ]
 
 AUTH_USER_MODEL='users.Account'
@@ -129,6 +130,8 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR, "static-storage"),
 ]
 
+LOGIN_REDIRECT_URL='/job'
+LOGOUT_REDIRECT_URL='/users/login/'
 
 
 
