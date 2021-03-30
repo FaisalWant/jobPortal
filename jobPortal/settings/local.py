@@ -134,6 +134,15 @@ LOGIN_REDIRECT_URL='/job'
 LOGOUT_REDIRECT_URL='/users/login/'
 
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Basic',
+        'height': 300,
+        'width': 400,
+    },
+}
+
+
 
 
 #where our static files will live, where they will be served

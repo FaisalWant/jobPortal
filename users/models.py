@@ -3,7 +3,9 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _ 
 from PIL import Image 
-
+from ckeditor.fields import RichTextField
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 class UserManager(BaseUserManager):
 	use_in_migrations= True
@@ -61,10 +63,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
 	user = models.OneToOneField(Account, on_delete=models.CASCADE, related_name="profile")
-	image = models.ImageField(upload_to="static-media/users")
+	image = models.ImageField(upload_to="static-media/users", default="static-media/users/person_1.jpg")
 	birth_day= models.DateField(default=None, blank=True, null=True)
 	location= models.CharField(max_length=100, blank=True)
-	resume = models.TextField(blank=True)
+	resume = RichTextField(blank=True)
 	company= models.CharField(max_length=250, blank=True)
 
 
@@ -80,3 +82,18 @@ class Profile(models.Model):
 			img.thumbnail(new_size)
 			img.save(self.image.path)
 
+
+@receiver(models.signals.post_save, sender=Account)
+def post_save_user_signal(sender, instance, created, **kwargs):
+	if created:
+		instance.save()
+
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+	if created:
+		Profile.objects.create(user=instance)
+
+
+
+post_save.connect(create_user_profile, sender=Account)
