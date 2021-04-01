@@ -61,5 +61,6 @@ class CategoryDetailView(ListView):
 	def get_context_data(self, *args,**kwargs):
 		context=super(CategoryDetailView,self).get_context_data(*args,**kwargs)
 		self.category =get_object_or_404(Category,pk=self.kwargs['pk'])
-		context['category']=Category.objects.all()
+		context['categories']=Category.objects.all()
+		context['category']=self.category
 		return context

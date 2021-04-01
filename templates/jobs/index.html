@@ -191,7 +191,7 @@
           {% for category in categories %}
         	<div class="col-md-3 ftco-animate">
         		<ul class="category">
-        			<li><a href="#">{{ category.title }} <span class="number" data-number="{{ category.job_count }}">0</span></a></li>
+        			<li><a href="{% url 'jobs:category-detail' category.slug category.pk %}">{{ category.title }} <span class="number" data-number="{{ category.job_count }}">0</span></a></li>
         			
         		</ul>
         	</div>
