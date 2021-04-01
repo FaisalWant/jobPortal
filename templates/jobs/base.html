@@ -54,10 +54,40 @@
       <li class="nav-item cta cta-colored"><a href="{% url 'users:login' %}" class="nav-link">Login</a></li>
       {% endif %}
 
-      {% if user.is_authenticated %}
-      <li class="nav-item cta cta-colored"><a href="{% url 'users:logout' %}" class="nav-link">Logout</a></li>
+      {% if user.is_authenticated and user.is_employee %}
+      <!-- Example single danger button -->
+			<div class="btn-group">
+			  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:50px">
+			     {{ user.first_name }}
+			  </button>
+			  <div class="dropdown-menu">
+			    <a class="dropdown-item" href="#">My Jobs</a>
+			    <a class="dropdown-item" href="{% url 'users:update_profile' pk=user.get_profile_id %}">Update Profile</a>
+			    <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
+			  </div>
+			</div>
 
       {% endif %}
+
+       {% if user.is_authenticated and user.is_employer %}
+      <!-- Example single danger button -->
+			<div class="btn-group">
+			  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height:50px">
+			    {{ user.first_name }}
+			  </button>
+			  <div class="dropdown-menu">
+			    <a class="dropdown-item" href="#">Add Job</a>
+			    <a class="dropdown-item" href="#">My Jobs</a>
+			    {% if user.get_profile_id %}
+			    <a class="dropdown-item" href="{% url 'users:update_profile' pk=user.get_profile_id %}"> Update Profile</a>
+			    {% endif %}
+			    <div class="dropdown-divider"></div>
+			    <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
+			  </div>
+			</div>
+
+      {% endif %}
+
 
     </ul>
   </div>
