@@ -35,13 +35,14 @@
 			            <div class="tab-content p-4" id="v-pills-tabContent">
 
 			              <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-nextgen-tab">
-			              	<form action="#" class="search-job">
+			              	<form action="{% url 'jobs:search' %}" class="search-job" method="get">
 			              		<div class="row">
 			              			<div class="col-md">
 			              				<div class="form-group">
 				              				<div class="form-field">
 				              					<div class="icon"><span class="icon-briefcase"></span></div>
-								                <input type="text" class="form-control" placeholder="eg. Garphic. Web Developer">
+
+	<input type="text" class="form-control" placeholder="eg. Garphic. Web Developer" name= "job_title">
 								              </div>
 							              </div>
 			              			</div>
@@ -50,13 +51,14 @@
 			              					<div class="form-field">
 				              					<div class="select-wrap">
 						                      <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-						                      <select name="" id="" class="form-control">
-						                      	<option value="">Category</option>
-						                      	<option value="">Full Time</option>
-						                        <option value="">Part Time</option>
-						                        <option value="">Freelance</option>
-						                        <option value="">Internship</option>
-						                        <option value="">Temporary</option>
+
+						              <select name="job_type" id="" class="form-control">
+						                      	
+						                      	<option value="full_time">Full Time</option>
+						                        <option value="part_time">Part Time</option>
+						                        <option value="freelance">Freelance</option>
+						                        <option value="internship">Internship</option>
+						                        <option value="temporary">Temporary</option>
 						                      </select>
 						                    </div>
 								              </div>
@@ -66,7 +68,8 @@
 			              				<div class="form-group">
 			              					<div class="form-field">
 				              					<div class="icon"><span class="icon-map-marker"></span></div>
-								                <input type="text" class="form-control" placeholder="Location">
+      <input type="text" class="form-control" placeholder="Location" 
+      name="job_location">
 								              </div>
 							              </div>
 			              			</div>
@@ -81,6 +84,11 @@
 			              	</form>
 			              </div>
 
+
+
+
+
+<!-- from second form -->
 			              <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-performance-tab">
 			              	<form action="#" class="search-job">
 			              		<div class="row">
@@ -97,7 +105,8 @@
 			              					<div class="form-field">
 				              					<div class="select-wrap">
 						                      <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-						                      <select name="" id="" class="form-control">
+						          <select name="job_type" id="" class="form-control">
+
 						                      	<option value="">Category</option>
 						                      	<option value="">Full Time</option>
 						                        <option value="">Part Time</option>
@@ -271,7 +280,7 @@
               <ul>
                 {% if page_obj.has_previous %}
 
-                <li><a href="?page={{ page_obj.previous_page_number }}"><</a></li>
+                <li><a href="?job_title={{ request.GET.job_title }}&job_type={{ request.GET.job_type}}&job_location={{ request.GET.location }}&page={{ page_obj.previous_page_number }}"><</a></li>
 
                 {% else %}
 
@@ -284,13 +293,13 @@
 
                 <li class="active"><span>{{ i }}</span></li>
                 {% else %}
-                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                <li><a href="?job_title={{request.GET.job_title }}&job_type={{ request.GET.job_type}}&job_location={{ request.GET.location }}&page={{ i }}">{{ i }}</a></li>
                 {% endif %}
 
                 {% endfor %}
                 {% if page_obj.has_next %}
 
-                <li><a href="?page={{ page_obj.next_page_number }} ">></a></li>
+                <li><a href="?job_title={{request.GET.job_title }}&job_type={{ request.GET.job_type}}&job_location={{ request.GET.location }}&page={{ page_obj.next_page_number }} ">></a></li>
                 {% else %}
 
                 <li class="disabled">

@@ -7,6 +7,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from .forms import *
 from django.views.generic import DetailView
 from django.shortcuts import get_object_or_404
+from django.db.models.query_utils import Q
+
 
 class HomeView(ListView):
 	template_name='jobs/index.html'
@@ -63,4 +65,35 @@ class CategoryDetailView(ListView):
 		self.category =get_object_or_404(Category,pk=self.kwargs['pk'])
 		context['categories']=Category.objects.all()
 		context['category']=self.category
+		return context
+
+
+class SearchJobView(ListView):
+	model=Job
+	template_name= 'jobs/search.html'
+	paginate_by=2
+	context_object_name='jobs'
+
+
+	def get_queryset(self):
+		q1=self.request.GET.get("job_title")
+		q2=self.request.GET.get("job_type")
+		q3=self.request.GET.get("job_location")
+
+
+		if q1 or q2 or q3:
+			return Job.objects.filter(
+									 Q(title__icontains=q1)|
+									 Q(description__icontains=q1),
+
+									 job_type=q2, 
+									 location__icontains=q3
+									 ).order_by('-id')
+
+		return Job.objects.all().order_by('-id')
+
+	def get_context_data(self, *args,**kwargs):
+		context=super(SearchJobView,self).get_context_data(*args,**kwargs)
+		context['categories']=Category.objects.all()
+		
 		return context
