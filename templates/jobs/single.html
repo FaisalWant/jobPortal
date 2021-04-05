@@ -24,6 +24,13 @@
           <div class="col-md-8 ftco-animate">
             <h2 class="mb-3">{{ job.title }}</h2>
             <p>{{ job.description|safe }}</p>
+            <hr>
+            <form method="post">
+              {% csrf_token %}
+            {% if user.is_employee %}
+            <input type="submit" value="Apply" class="btn btn-primary py-2 mr-1">
+            {% endif %}
+          </form>
             <p>
               <img src="images/image_7.jpg" alt="" class="img-fluid">
             </p>

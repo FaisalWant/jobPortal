@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -8,7 +8,7 @@ from .forms import *
 from django.views.generic import DetailView
 from django.shortcuts import get_object_or_404
 from django.db.models.query_utils import Q
-
+from django.urls import reverse
 
 class HomeView(ListView):
 	template_name='jobs/index.html'
@@ -39,16 +39,26 @@ class CreateJobView(SuccessMessageMixin, CreateView ):
 		return super(CreateJobView,self).form_valid(form)
 
 
-class SingleJobView(DetailView):
+class SingleJobView(SuccessMessageMixin, UpdateView):
 	template_name='jobs/single.html'
 	model=Job
 	context_object_name="job"
+	form_class= ApplyJobForm
+	success_message= "You Applied this job!"
 
 	def get_context_data(self, **kwargs):
 		context= super(SingleJobView,self).get_context_data(**kwargs)
 		context['categories']=Category.objects.all()
 		return context
 
+	def form_valid(self, form):
+		employee=self.request.user
+		form.instance.employee.add(employee)
+		form.save()
+		return super(SingleJobView, self).form_valid(form)
+
+	def get_success_url(self):
+		return reverse('jobs:single-job', kwargs={'slug':self.object.slug, "pk":self.object.pk})
 
 class CategoryDetailView(ListView):
 	model=Job
