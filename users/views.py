@@ -8,8 +8,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import DetailView
-from jobs.models import Category
+from django.views.generic import DetailView, ListView
+from jobs.models import Category, Job
 # Create your views here.
 
 
@@ -78,3 +78,13 @@ class EmployeeProfileView(DetailView):
 		context['categories']=Category.objects.all()
 
 		return context
+
+@method_decorator(login_required(login_url='/users/login'), name='dispatch')
+class EmployerPostedJobsView(ListView):
+	template_name='users/employer-posted-jobs.html'
+	context_object_name='employer_jobs'
+	model= Job
+	paginate_by=3
+
+	def get_queryset(self):
+		return Job.objects.filter(employer=self.request.user).order_by('-id')
