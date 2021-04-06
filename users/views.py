@@ -3,12 +3,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import AccountRegisterForm, UserUpdateForm
-from .models import Profile
+from .models import Profile,Account 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.views.generic import DetailView
+from jobs.models import Category
 # Create your views here.
 
 
@@ -66,4 +67,14 @@ class UserUpdateView(SuccessMessageMixin, UpdateView):
 		return reverse('users:update_profile', kwargs={'pk':self.object.pk})
 
 
+class EmployeeProfileView(DetailView):
+	template_name='users/employee-profile.html'
+	model= Account
 
+	def get_context_data(self, **kwargs):
+		context= super(EmployeeProfileView, self).get_context_data(**kwargs)
+		context['account']=Account.objects.get(pk=self.kwargs['pk'])
+		context['profile']=Profile.objects.get(user_id=self.kwargs['pk'])
+		context['categories']=Category.objects.all()
+
+		return context
