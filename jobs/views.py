@@ -49,6 +49,8 @@ class SingleJobView(SuccessMessageMixin, UpdateView):
 	def get_context_data(self, **kwargs):
 		context= super(SingleJobView,self).get_context_data(**kwargs)
 		context['categories']=Category.objects.all()
+		context['employee_applied']=Job.objects.get(pk=self.kwargs['pk']).employee.all().filter(id=self.request.user.id)
+		context['applied_employees']=  Job.objects.get(pk=self.kwargs['pk']).employee.all()
 		return context
 
 	def form_valid(self, form):
@@ -75,6 +77,7 @@ class CategoryDetailView(ListView):
 		self.category =get_object_or_404(Category,pk=self.kwargs['pk'])
 		context['categories']=Category.objects.all()
 		context['category']=self.category
+
 		return context
 
 
