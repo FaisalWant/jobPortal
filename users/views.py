@@ -74,11 +74,21 @@ class EmployeeProfileView(CreateView):
 
 	def get_context_data(self, **kwargs):
 		context= super(EmployeeProfileView, self).get_context_data(**kwargs)
-		context['account']=Account.objects.get(pk=self.kwargs['pk'])
-		context['profile']=Profile.objects.get(user_id=self.kwargs['pk'])
+		context['account']=Account.objects.get(pk=self.kwargs['employee_id'])
+		context['profile']=Profile.objects.get(user_id=self.kwargs['employee_id'])
+		context['job']=Job.objects.get(id=self.kwargs['job_id'])
 		context['categories']=Category.objects.all()
 
 		return context
+
+	def form_valid(self, form):
+		instance= form.save(commit=False)
+		instance.user= Account.objects.get(pk=self.kwargs['employee_id'])
+		instance.job=Job.objects.get(pk=self.kwargs['job_id'])
+		instance.save()
+		return super(EmployeeProfileView, self).form_valid(form)
+	def get_success_url(self):
+		return reverse('users:employer_jobs')
 
 @method_decorator(login_required(login_url='/users/login'), name='dispatch')
 class EmployerPostedJobsView(ListView):

@@ -56,7 +56,7 @@
 
 
           {% for employee in applied_employees %}
-          <a href="{% url 'users:employee_profile' pk=employee.pk %}" class="list-group-item list-group-item-action">{{ employee.first_name }}  {{employee.last_name}}</a>
+          <a href="{% url 'users:employee_profile' employee_id=employee.pk job_id=job.id %}" class="list-group-item list-group-item-action">{{ employee.first_name }}  {{employee.last_name}}</a>
            {% endfor %}
         </div>
         {% else %}
