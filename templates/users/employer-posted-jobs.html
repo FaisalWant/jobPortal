@@ -220,7 +220,7 @@
         </div>
 				<div class="row">
 
-					{% if useris_employer and employer_jobs %}
+					{% if user.is_employer and employer_jobs %}
 				{% for job in employer_jobs %}
 
 		<div class="col-md-12 ftco-animate">
@@ -271,7 +271,7 @@
 
           {% endfor %}
 
-          {% else %}
+          {% if user.is_employer and not employer_jobs %} 
 
 
           		<div class="col-md-12 ftco-animate">
@@ -292,6 +292,7 @@
 
 </div>
 </div>
+          {% endif %}
           {% endif %}
           {% if user.is_employee %}
 
@@ -359,6 +360,7 @@
           {% endif %}
         </div>
 			</div>
+		</div>
 		</section>
    
     <section class="ftco-section ftco-counter img" id="section-counter" style="background-image: url('{% static 'images/bg_1.jpg' %}');" data-stellar-background-ratio="0.5">
