@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import Account, Profile
+from .models import Account, Profile, Invite
 
 
 class AccountRegisterForm(UserCreationForm):
@@ -22,4 +22,13 @@ class UserUpdateForm(forms.ModelForm):
 		exclude =('user',)
 		widgets ={
 		'birth_day':forms.DateInput(attrs={'type':'date'})
+		}
+
+
+class InviteEmployeeForm(forms.ModelForm):
+	class Meta:
+		model= Invite
+		fields=['date', 'message']
+		widgets={
+		'date':forms.DateInput(attrs={'type':'date'})
 		}

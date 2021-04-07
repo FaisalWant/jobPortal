@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import LoginView, LogoutView
-from .forms import AccountRegisterForm, UserUpdateForm
+from .forms import AccountRegisterForm, UserUpdateForm, InviteEmployeeForm
 from .models import Profile,Account 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -67,9 +67,10 @@ class UserUpdateView(SuccessMessageMixin, UpdateView):
 		return reverse('users:update_profile', kwargs={'pk':self.object.pk})
 
 
-class EmployeeProfileView(DetailView):
+class EmployeeProfileView(CreateView):
 	template_name='users/employee-profile.html'
 	model= Account
+	form_class=InviteEmployeeForm
 
 	def get_context_data(self, **kwargs):
 		context= super(EmployeeProfileView, self).get_context_data(**kwargs)
