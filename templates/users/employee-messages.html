@@ -168,7 +168,17 @@
 
 						  <div class="mb-4 mb-md-0 mr-5">
 						   <div class="job-post-item-header d-flex align-items-center">
-						     <h2 class="mr-3 text-black h4">{{ job.title }}</h2>
+
+						   	{% if job.id in user.unread_messages %}
+						     <h2 class="mr-3 text-black h4" style="color:red">{{ job.title }}  </h2>
+
+						     
+
+						      {% else %}
+
+						       <h2 class="mr-3 text-black h4" >{{ job.title }}  </h2>
+
+						       {% endif %}
 
 						     <div class="badge-wrap">
                   {% if job.job_type == 'full_time' %}
