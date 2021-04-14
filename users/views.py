@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import AccountRegisterForm, UserUpdateForm, InviteEmployeeForm
-from .models import Profile,Account 
+from .models import Profile,Account,Invite
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -112,3 +112,9 @@ class EmployeeMessagesView(ListView):
 
 	def get_queryset(self):
 		return Job.objects.filter(invites__isnull=False, invites__user_id=self.request.user).order_by('-invites')
+
+
+class EmployeeDisplayMessages(DetailView):
+	model= Invite
+	template_name='users/employee-display-messages.html'
+	context_object_name='invite'
