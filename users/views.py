@@ -118,3 +118,15 @@ class EmployeeDisplayMessages(DetailView):
 	model= Invite
 	template_name='users/employee-display-messages.html'
 	context_object_name='invite'
+
+
+	def get_queryset(self):
+		invite=self.model.objects.filter(id=self.kwargs['pk'])
+		invite.update(unread=False)
+		return invite
+
+	def get(self, request, *args, **kwargs):
+		self.object= self.get_object()
+		if self.object.user != request.user:
+			return HttpResponseRedirect('/job')
+		return super(EmployeeDisplayMessages, self).get(request, *args, **kwargs)
