@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -9,6 +9,7 @@ from django.views.generic import DetailView
 from django.shortcuts import get_object_or_404
 from django.db.models.query_utils import Q
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 class HomeView(ListView):
 	template_name='jobs/index.html'
@@ -114,3 +115,31 @@ class SearchJobView(ListView):
 		context['categories']=Category.objects.all()
 		
 		return context
+
+
+class UpdateJobView(SuccessMessageMixin, UpdateView):
+	model= Job
+	template_name= 'jobs/update.html'
+	form_class=UpdateJobForm
+	success_message= "You Updated Your Job!"
+
+	def form_valid(self, form):
+		form.instance.employer=self.request.user
+		return super(UpdateJobView, self).form_valid(form)
+
+
+	def get(self, request, *args, **kwargs):
+		self.object= self.get_object()
+		if self.object.employer != request.user:
+			return HttpResponseRedirect('/job')
+
+		return super(UpdateJobView, self).get(request, *args, **kwargs)
+
+	def get_success_url(self):
+		return reverse('jobs:single-job', kwargs={"pk":self.object.pk, "slug":self.object.slug})
+
+
+
+class DeleteJobView(SuccessMessageMixin, DeleteView):
+	pass
+
