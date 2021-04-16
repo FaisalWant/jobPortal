@@ -141,5 +141,29 @@ class UpdateJobView(SuccessMessageMixin, UpdateView):
 
 
 class DeleteJobView(SuccessMessageMixin, DeleteView):
-	pass
+	model= Job
+	success_url= '/job'
+	template_name= 'jobs/delete.html'
+
+
+	def delete(self, request, *args, **kwargs):
+		self.object= self.get_object()
+		if self.object.employer== request.user:
+			self.object.delete()
+			return HttpResponseRedirect(self.success_url)
+		else:
+			return HttpResponseRedirect(self.success_url)
+
+
+
+	def get(self, request, *args, **kwargs):
+		self.object= self.get_object()
+		if self.object.employer != request.user:
+			return HttpResponseRedirect('/job')
+
+		return super(DeleteJobView, self).get(request, *args, **kwargs)
+
+
+
+
 
