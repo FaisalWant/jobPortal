@@ -130,3 +130,36 @@ class EmployeeDisplayMessages(DetailView):
 		if self.object.user != request.user:
 			return HttpResponseRedirect('/job')
 		return super(EmployeeDisplayMessages, self).get(request, *args, **kwargs)
+
+
+
+@method_decorator(login_required(login_url='/users/login'), name='dispatch')
+class AddWishListView(UpdateView):
+	template_name='jobs/index.html'
+	model=Profile
+
+	def get(self, request, *args, **kwargs):
+		if self.request.user.is_employee:
+			job=Job.objects.get(id=self.kwargs['pk'])
+			profile=Profile.objects.get(user=request.user)
+			profile.wish_list.add(job)
+			return redirect('jobs:home')
+
+		else:
+			return redirect('jobs:home')
+
+@method_decorator(login_required(login_url='/users/login'), name='dispatch')
+class RemoveFromWishListView(UpdateView):
+	template_name='jobs/index.html'
+	model=Profile
+
+	def get(self, request, *args, **kwargs):
+		if self.request.user.is_employee:
+			job=Job.objects.get(id=self.kwargs['pk'])
+			profile=Profile.objects.get(user=request.user)
+			profile.wish_list.remove(job)
+			return redirect('jobs:home')
+
+		else:
+			return redirect('jobs:home')
+
