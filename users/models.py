@@ -78,6 +78,7 @@ class Profile(models.Model):
 	location= models.CharField(max_length=100, blank=True)
 	resume = RichTextField(blank=True)
 	company= models.CharField(max_length=250, blank=True)
+	wish_list= models.ManyToManyField(Job,default=None, blank=True, related_name="wish_list")
 
 
 	def __str__(self):
