@@ -261,12 +261,12 @@
 
                 {% if job.id in wish_list %}
 
-                <a href="javascripts:void(0);" onclick="removefrommywishlist({{job.id}})" id="jobwl{{job.id}}" title="Remove from my wish list" class="btn btn-danger rounded-circle btn-favorite d-flex align-items-center">
+                <a href="javascripts:void(0);" onclick="addorremove({{job.id}})" id="jobwl{{job.id}}" title="Remove from my wish list" class="btn btn-danger rounded-circle btn-favorite d-flex align-items-center">
                 	<span class="icon-heart"></span>
                 </a>
                 {% else %}
 
-                 <a href="javascripts:void(0);" onclick="addtomywishlist({{job.id}})" id="jobwl{{job.id}}" title="Add to wish list" class="btn btn-primary rounded-circle btn-favorite d-flex align-items-center">
+                 <a href="javascripts:void(0);" onclick="addorremove({{job.id}})" id="jobwl{{job.id}}" title="Add to wish list" class="btn btn-primary rounded-circle btn-favorite d-flex align-items-center">
                   <span class="icon-heart"></span>
                 </a>
 
@@ -533,9 +533,11 @@
     <script type="text/javascript">
 
 
-      function addtomywishlist(id){
+      function addorremove(id){
 
         if (id){
+          var wishlist=$('#jobwl'+id).data('wl');
+          if (wishlist==0){
 
           $.ajax({
             url:"/users/add-wishlist/"+id,
@@ -559,17 +561,13 @@
               icon: 'success',
               title: 'Added to List'
             })
+
+            $('#jobwl'+id).data('wl',1);
             }
 
           });
-        }
+        }else{
 
-      }
-
-
-      function removefrommywishlist(id){
-
-        if (id){
 
           $.ajax({
             url:"/users/remove-from-wishlist/"+id,
@@ -594,14 +592,17 @@
                      })  
 
 
-
+            $('#jobwl'+id).data('wl',0);
 
             }
 
           });
+
+        }
         }
 
       }
+
 
 
     </script>
