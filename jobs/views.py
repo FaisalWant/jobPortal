@@ -59,6 +59,7 @@ class SingleJobView(SuccessMessageMixin, UpdateView):
 		context= super(SingleJobView,self).get_context_data(**kwargs)
 		context['categories']=Category.objects.all()
 		context['employee_applied']=Job.objects.get(pk=self.kwargs['pk']).employee.all().filter(id=self.request.user.id)
+		context['in_my_list']=Job.objects.get(pk=self.kwargs['pk']).wish_list.all().filter(user_id=self.request.user.id)
 		try:	
 			context['applied_employees']=  Job.objects.get(pk=self.kwargs['pk'],employer_id=self.request.user.id).employee.all()
 			context['employer_id']= Job.objects.get(pk=self.kwargs['pk']).employer_id

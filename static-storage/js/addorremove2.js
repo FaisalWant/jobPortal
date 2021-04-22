@@ -1,0 +1,32 @@
+    function addorremove(id){
+
+        if (id){
+
+          $.ajax({
+           
+           
+            success:function(){
+             
+              
+              const Toast = Swal.mixin({
+              toast: true,
+              position: 'top',
+              showConfirmButton: true,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+
+            Toast.fire({
+              icon: 'error',
+              title: 'You are not an employee'
+            })
+            }
+
+          });
+        }
+
+      }

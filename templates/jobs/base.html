@@ -221,6 +221,19 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="{% static 'js/google-map.js' %}"></script>
   <script src="{% static 'js/main.js' %}"></script>
+
+  {% if user.is_authenticated and user.is_employee %}
+  <script src="{% static 'js/addorremove.js' %}"></script>
+
+  {% else %}
+ <script src="{% static 'js/addorremove2.js' %}"></script>
+
+
+ {% endif %}
+
+
+
+
     
   </body>
 </html>

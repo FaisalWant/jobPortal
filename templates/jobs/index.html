@@ -261,12 +261,12 @@
 
                 {% if job.id in wish_list %}
 
-                <a href="javascripts:void(0);" onclick="addorremove({{job.id}})" id="jobwl{{job.id}}" title="Remove from my wish list" class="btn btn-danger rounded-circle btn-favorite d-flex align-items-center">
+            <a href="javascripts:void(0);" onclick="addorremove({{job.id}})" id="jobwl{{job.id}}" title="Remove from my wish list" class="btn btn-danger rounded-circle btn-favorite d-flex align-items-center">
                 	<span class="icon-heart"></span>
                 </a>
                 {% else %}
 
-                 <a href="javascripts:void(0);" onclick="addorremove({{job.id}})" id="jobwl{{job.id}}" title="Add to wish list" class="btn btn-primary rounded-circle btn-favorite d-flex align-items-center">
+            <a href="javascripts:void(0);" onclick="addorremove({{job.id}})" id="jobwl{{job.id}}" title="Add to wish list" class="btn btn-primary rounded-circle btn-favorite d-flex align-items-center">
                   <span class="icon-heart"></span>
                 </a>
 
@@ -529,129 +529,8 @@
       </div>
     </section>
 
- {% if user.is_authenticated and user.is_employee %}
-    <script type="text/javascript">
-
-
-      function addorremove(id){
-
-        if (id){
-          var wishlist=$('#jobwl'+id).data('wl');
-          if (wishlist==0){
-
-          $.ajax({
-            url:"/users/add-wishlist/"+id,
-            method:"GET",
-            success:function(){
-              $('#jobwl'+id).removeClass('btn-primary').addClass('btn-danger')
-              
-              const Toast = Swal.mixin({
-              toast: true,
-              position: 'top',
-              showConfirmButton: true,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-              }
-            })
-
-            Toast.fire({
-              icon: 'success',
-              title: 'Added to List'
-            })
-
-            $('#jobwl'+id).data('wl',1);
-            }
-
-          });
-        }else{
-
-
-          $.ajax({
-            url:"/users/remove-from-wishlist/"+id,
-            method:"GET",
-            success:function(){
-              $('#jobwl'+id).removeClass('btn-danger').addClass('btn-primary')
-             const Toast = Swal.mixin({
-              toast: true,
-              position: 'top',
-              showConfirmButton: true,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                  }
-                })
-
-                Toast.fire({
-                  icon: 'success',
-                  title: 'You Removed from List'
-                     })  
-
-
-            $('#jobwl'+id).data('wl',0);
-
-            }
-
-          });
-
-        }
-        }
-
-      }
-
-
-
-    </script>
-
-  {% else %}
-
-
-      <script type="text/javascript">
-
-
-      function addtomywishlist(id){
-
-        if (id){
-
-          $.ajax({
-           
-           
-            success:function(){
-             
-              
-              const Toast = Swal.mixin({
-              toast: true,
-              position: 'top',
-              showConfirmButton: true,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-              }
-            })
-
-            Toast.fire({
-              icon: 'error',
-              title: 'You are not an employee'
-            })
-            }
-
-          });
-        }
-
-      }
-
-
  
-
-    </script>
-
-  {% endif %}
+    
 
     {% endblock %}
 		
