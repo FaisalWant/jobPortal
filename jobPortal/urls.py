@@ -23,6 +23,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('job', include('jobs.urls')),
     path('users/', include('users.urls')),
+    path('users/', include('django.contrib.auth.urls')),
 ]
 
 
